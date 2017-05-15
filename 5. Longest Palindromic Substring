@@ -1,0 +1,32 @@
+      /**
+       * 选择一个中心点，向两边扩张判断是否是回文，是则继续扩张，不是记录下长度。
+       * 中心点从0一直移动到字符串末尾
+       * 即可找出最长回文序列
+       */ 
+       public String longestPalindrome(String s) {
+           String result="";
+           if(s.length()<=1)
+                return s;
+           int max=0;
+           for(int i=0;i<2*s.length()-1;i++){
+               int left=i/2+1;
+               int right=i/2+1;
+               if(i%2==0){
+                   left--;
+               }
+               String str=solve(left,right,s);
+               if(max<str.length()){
+                   max=str.length();
+                   result=str;
+               }
+               
+           }
+           return result;
+       }
+       public String solve(int left,int right,String s){
+           while(left>=0&&right<s.length()&&s.charAt(left)==s.charAt(right)){
+               left--;
+               right++;
+           }
+           return s.substring(left+1,right);
+       }
