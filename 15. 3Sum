@@ -1,0 +1,46 @@
+public class Solution {
+    /**
+     *总体思路是固定一个数，寻找另外了两个数
+     *先排序，固定一个数，再分别从前后扫描找另外两个数，从两端想中间靠拢
+     */
+    List<List<Integer>> ret = new ArrayList<List<Integer>>();  
+      
+    public List<List<Integer>> threeSum(int[] num) {
+        //先判断
+        if (num == null || num.length < 3) return ret;  
+        //排序，方便之后的扫描
+        Arrays.sort(num);  
+/*      //本以为先判断一下会更好，但加入判断后用时好像更多了
+        if(num[0]>0) return ret;
+        if(num[num.length-1]<0) return ret;*/
+        int len = num.length;  
+        for (int i = 0; i < len-2; i++) {
+            //为了排除重复的情况
+            if (i > 0 && num[i] == num[i-1]) continue;  
+            find(num, i+1, len-1, num[i]); //寻找两个数与num[i]的和为0  
+        }  
+          
+        return ret;  
+    }  
+      
+    public void find(int[] num, int begin, int end, int target) {  
+        int l = begin, r = end;  
+        while (l < r) {  
+            if (num[l] + num[r] + target == 0) {  
+                List<Integer> ans = new ArrayList<Integer>();  
+                ans.add(target);  
+                ans.add(num[l]);  
+                ans.add(num[r]);  
+                ret.add(ans); //放入结果集中  
+                while (l < r && num[l] == num[l+1]) l++;//相同的直接跳过（排除重复）  
+                while (l < r && num[r] == num[r-1]) r--;  
+                l++;  
+                r--;  
+            } else if (num[l] + num[r] + target < 0) {//向中间逼近
+                l++;  
+            } else {
+                r--;  
+            }  
+        }  
+    }  
+}
